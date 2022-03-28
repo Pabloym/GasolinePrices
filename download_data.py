@@ -45,7 +45,7 @@ for x in list_of_prices[2:]:
     if dictionary:
         results.append(dictionary)
 
-filtering_petrol_station = [("CALLE TUICIDES", "GALP", "GALP-TUICIDES"), ("AVENIDA AVDA. WASHINGTON-POLIG. EL VISO", "GALP", "GALP-EL VISO"), ("CALLE SAIN EXUPERY", "CARREFOUR", "CARREFOUR"), ("AV VALLE INCLAN", "BP CAMINO SUAREZ", "BP CAMINO SUAREZ"), ("CALLE LICURGO", "PETROPRIX", "PETROPRIX-LICURGO")]
+filtering_petrol_station = [("CALLE TUICIDES", "GALP", "GALP-TUICIDES"), ("AVENIDA AVDA. WASHINGTON-POLIG. EL VISO", "GALP", "GALP-EL VISO"), ("CALLE HERMAN HESSE", "GALP", "GALP-HERMANN"), ("CALLE SAIN EXUPERY", "CARREFOUR", "CARREFOUR"), ("AV VALLE INCLAN", "BP CAMINO SUAREZ", "BP CAMINO SUAREZ"), ("CALLE LICURGO", "PETROPRIX", "PETROPRIX-LICURGO")]
 
 final_results = dict()
 final_results["Date"] = date
@@ -55,7 +55,7 @@ for street, petrol_station, label in filtering_petrol_station:
         if data["Direccion"] == street and data["Rotulo"] == petrol_station:
             final_results[label] = data["PrecioProducto"]
 
-headers = ["Date", "GALP-TUICIDES", "GALP-EL VISO", "CARREFOUR", "BP CAMINO SUAREZ", "PETROPRIX-LICURGO"]
+headers = ["Date", "GALP-TUICIDES", "GALP-EL VISO", "GALP-HERMANN", "CARREFOUR", "BP CAMINO SUAREZ", "PETROPRIX-LICURGO"]
 
 with open("Data/prices.csv", "a") as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=headers)

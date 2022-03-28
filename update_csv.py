@@ -6,6 +6,7 @@ import pandas as pd
 
 galp_tuicides = []
 galp_viso = []
+galp_hermann = []
 carrefour = []
 bp = []
 petroprix = []
@@ -28,9 +29,10 @@ with open("Data/prices.csv", "r") as csvfile:
             line = line.split(",")
             galp_tuicides.append((line[0], line[1]))
             galp_viso.append((line[0], line[2]))
-            carrefour.append((line[0], line[3]))
-            bp.append((line[0], line[4]))
-            petroprix.append((line[0], line[5]))
+            galp_hermann.append((line[0], line[3]))
+            carrefour.append((line[0], line[4]))
+            bp.append((line[0], line[5]))
+            petroprix.append((line[0], line[6]))
 
 
 def cheaper_day(petrol_station):
@@ -55,6 +57,7 @@ def update_csv_data(petrol_station, petrol_station_name):
 
 update_csv_data(galp_tuicides, "galp_tuicides")
 update_csv_data(galp_viso, "galp_el_viso")
+update_csv_data(galp_viso, "galp_hermann")
 update_csv_data(carrefour, "carrefour")
 update_csv_data(petroprix, "petroprix_licurgo")
 update_csv_data(bp, "bp_camino_suarez")

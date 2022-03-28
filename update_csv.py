@@ -39,18 +39,27 @@ def cheaper_day(petrol_station):
     """
     Function useful to get the weekday when the petrol is cheaper.
     It only will be executed on Sundays, when the prices of all the week are available.
+
+    If th lowest price appears several times, it will return a list with all of these days.
     """
     prices = [price for date, price in petrol_station][-7:]
-    return np.argmin(prices)
+    index_of_lower_price = np.argmin(prices)
+    minimun = prices(index_of_lower_price)
+    indexes = [index for index in range(len(prices)) if prices[index] == minimun]
+    isMinimunRepeated = len(indexes) > 1
+    if isMinimunRepeated:
+        return indexes
+    return [index_of_lower_price]
 
 
 def update_csv_data(petrol_station, petrol_station_name):
     path = f"Data/cheaper_day_for_{petrol_station_name}.csv"
     df = pd.read_csv(path)
     dict_of_weekday = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
-    weekday = dict_of_weekday[cheaper_day(petrol_station)]
-    value_to_update = df._get_value(0, weekday)
-    df[weekday] = df[weekday].replace({value_to_update: value_to_update + 1})
+    weekdays = [dict_of_weekday[day] for day in cheaper_day(petrol_station)]
+    for weekday in weekdays:
+        value_to_update = df._get_value(0, weekday)
+        df[weekday] = df[weekday].replace({value_to_update: value_to_update + 1})
     df.to_csv(path, index=False)
     print(f"Update completed for petrol station: {petrol_station_name}")
 

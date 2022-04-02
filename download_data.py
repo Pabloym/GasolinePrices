@@ -10,7 +10,8 @@ URL = f"https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/Precios
 
 urllib.request.urlretrieve(URL, "Data/gasoline.txt")
 
-file = open("Data/gasoline.txt", encoding="mbcs")
+file = open("Data/gasoline.txt", encoding="utf-8")
+#encoding="mcbs" if running on windows
 
 list_of_prices = file.read().split("{")
 
@@ -26,6 +27,7 @@ for x in list_of_prices[2:]:
             .replace("Ã³", "o")\
             .replace("Ã¡","a")\
             .replace("","")\
+            .replace("ó","o")\
             .replace("Ã","A")\
             .split("}],")[0]\
             .split(",")

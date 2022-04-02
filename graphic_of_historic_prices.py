@@ -26,8 +26,8 @@ def plot_line_chart():
     fig, ax = plt.subplots()
 
     ax.plot(galp_tuicides, "orange", marker='o', label="GALP - Tuicides")
-    ax.plot(galp_viso, "gold", marker='o', label="GALP - El Viso")
-    ax.plot(galp_viso, "darkgoldenrod", marker='o', label="GALP - Hermann")
+    ax.plot(galp_viso, "c", marker='o', label="GALP - El Viso")
+    ax.plot(galp_hermann, "black", marker='o', label="GALP - Hermann")
     ax.plot(bp, "g",  marker='o', label="BP")
     ax.plot(carrefour, "b",  marker='o', label="Carrefour")
     ax.plot(petroprix, "r",  marker='o', label="Petroprix")

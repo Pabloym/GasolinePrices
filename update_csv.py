@@ -44,7 +44,7 @@ def cheaper_day(petrol_station):
     """
     prices = [price for date, price in petrol_station][-7:]
     index_of_lower_price = np.argmin(prices)
-    minimun = prices(index_of_lower_price)
+    minimun = prices[index_of_lower_price]
     indexes = [index for index in range(len(prices)) if prices[index] == minimun]
     isMinimunRepeated = len(indexes) > 1
     if isMinimunRepeated:

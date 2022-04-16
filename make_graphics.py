@@ -36,3 +36,5 @@ statistics_of_the_cheaper_day_of_a_week("galp_hermann")
 statistics_of_the_cheaper_day_of_a_week("carrefour")
 statistics_of_the_cheaper_day_of_a_week("petroprix_licurgo")
 statistics_of_the_cheaper_day_of_a_week("bp_camino_suarez")
+
+print("Graphics of each petrol station updated.")

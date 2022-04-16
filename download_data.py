@@ -10,13 +10,14 @@ URL = f"https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/Precios
 
 urllib.request.urlretrieve(URL, "Data/gasoline.txt")
 
+print(("Donwloading data..."))
+
 file = open("Data/gasoline.txt", encoding="utf-8")
 #encoding="mcbs" if running on windows
 
 list_of_prices = file.read().split("{")
 
 date = list_of_prices[1].split("\"")[3].replace("\\", "").split(" ")[0]
-print("DATE:", date)
 
 results = []
 
@@ -64,3 +65,5 @@ with open("Data/prices.csv", "a") as csvfile:
     #writer.writeheader()
     writer.writerow(final_results)
     csvfile.close()
+
+print(f"Data updated to the current date {date}.")

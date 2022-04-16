@@ -10,6 +10,8 @@ carrefour = []
 bp = []
 petroprix = []
 
+print("Updating the graphic of the historic prices.")
+
 with open("Data/prices.csv", "r") as csvfile:
     lines = csvfile.read().split("\n")
     for line in lines:
@@ -41,3 +43,5 @@ def plot_line_chart():
     #plt.show()
 
 plot_line_chart()
+
+print("Graphic updated.")

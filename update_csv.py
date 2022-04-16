@@ -70,3 +70,5 @@ update_csv_data(galp_viso, "galp_hermann")
 update_csv_data(carrefour, "carrefour")
 update_csv_data(petroprix, "petroprix_licurgo")
 update_csv_data(bp, "bp_camino_suarez")
+
+print("Data of each petrol station updated.")

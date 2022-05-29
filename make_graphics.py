@@ -3,14 +3,6 @@ import datetime
 
 # This script will be executed each Sunday.
 
-galp_tuicides = []
-galp_viso = []
-galp_hermann = []
-carrefour = []
-bp = []
-petroprix = []
-
-
 def date_to_weekday(date):
     d, m, y = date.split("/")
     return datetime.datetime(int(y), int(m), int(d)).weekday()
@@ -36,5 +28,7 @@ statistics_of_the_cheaper_day_of_a_week("galp_hermann")
 statistics_of_the_cheaper_day_of_a_week("carrefour")
 statistics_of_the_cheaper_day_of_a_week("petroprix_licurgo")
 statistics_of_the_cheaper_day_of_a_week("bp_camino_suarez")
+statistics_of_the_cheaper_day_of_a_week("shell")
+
 
 print("Graphics of each petrol station updated.")

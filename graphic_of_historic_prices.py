@@ -9,6 +9,7 @@ galp_hermann = []
 carrefour = []
 bp = []
 petroprix = []
+shell = []
 
 print("Updating the graphic of the historic prices.")
 
@@ -23,6 +24,10 @@ with open("Data/prices.csv", "r") as csvfile:
             carrefour.append(float(line[4]))
             bp.append(float(line[5]))
             petroprix.append(float(line[6]))
+            try:
+                shell.append(float(line[7]))
+            except:
+                pass
 
 def plot_line_chart():
     fig, ax = plt.subplots()
@@ -33,6 +38,7 @@ def plot_line_chart():
     ax.plot(bp, "g",  marker='o', label="BP")
     ax.plot(carrefour, "b",  marker='o', label="Carrefour")
     ax.plot(petroprix, "r",  marker='o', label="Petroprix")
+    ax.plot(list(range(57, len(galp_viso))), shell, "fuchsia",  marker='o', label="Shell")
 
     plt.title('Historic prices')
     plt.xlabel('Days')

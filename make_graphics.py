@@ -17,7 +17,7 @@ def statistics_of_the_cheaper_day_of_a_week(name):
     y_pos = [1, 2, 3, 4, 5, 6, 7]
     plt.bar(y_pos, statistics)
     plt.xticks(y_pos, days, rotation=15)
-    plt.title('Cheaper day of the week to fill the fuel tank.')
+    plt.title('Cheaper weekday to fill the fuel tank.')
     plt.savefig(f"Results/cheaper_day_{name}")
     plt.close()
     #plt.show()

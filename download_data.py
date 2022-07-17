@@ -60,7 +60,7 @@ for street, petrol_station, label in filtering_petrol_station:
 
 headers = ["Date", "GALP-TUICIDES", "GALP-EL VISO", "GALP-HERMANN", "CARREFOUR", "BP CAMINO SUAREZ", "PETROPRIX-LICURGO", "SHELL"]
 
-with open("Data/prices.csv", "a") as csvfile:
+with open("Data/prices.csv", "a", newline='') as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=headers)
     #writer.writeheader()
     writer.writerow(final_results)

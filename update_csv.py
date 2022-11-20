@@ -4,14 +4,6 @@ import pandas as pd
 
 # This script have to be executed weekly on Sunday.
 
-galp_tuicides = []
-galp_viso = []
-galp_hermann = []
-carrefour = []
-bp = []
-petroprix = []
-shell = []
-
 
 def date_to_weekday(date):
     d, m, y = date.split("/")
@@ -23,22 +15,31 @@ today = datetime.date.today().strftime("%d/%m/20%y")
 #if date_to_weekday(today) != 6:
 #    raise Exception("The results must be update only on Sunday.")
 
-with open("Data/prices.csv", "r") as csvfile:
-    lines = csvfile.read().split("\n")
-    for line in lines:
-        if line and "Date" not in line:
-            line = line.split(",")
-            galp_tuicides.append((line[0], line[1]))
-            galp_viso.append((line[0], line[2]))
-            galp_hermann.append((line[0], line[3]))
-            carrefour.append((line[0], line[4]))
-            bp.append((line[0], line[5]))
-            petroprix.append((line[0], line[6]))
-            try:
-                shell.append((line[0], line[7]))
-            except:
-                pass
+def get_data():
+    galp_tuicides = []
+    galp_viso = []
+    galp_hermann = []
+    carrefour = []
+    bp = []
+    petroprix = []
+    shell = []
 
+    with open("Data/prices.csv", "r") as csvfile:
+        lines = csvfile.read().split("\n")
+        for line in lines:
+            if line and "Date" not in line:
+                line = line.split(",")
+                galp_tuicides.append((line[0], line[1]))
+                galp_viso.append((line[0], line[2]))
+                galp_hermann.append((line[0], line[3]))
+                carrefour.append((line[0], line[4]))
+                bp.append((line[0], line[5]))
+                petroprix.append((line[0], line[6]))
+                try:
+                    shell.append((line[0], line[7]))
+                except:
+                    pass
+    return galp_tuicides, galp_viso, galp_hermann, carrefour, bp, petroprix, shell
 
 def cheaper_day(petrol_station):
     """
@@ -69,13 +70,15 @@ def update_csv_data(petrol_station, petrol_station_name):
     print(f"Update completed for petrol station: {petrol_station_name}")
 
 
-update_csv_data(galp_tuicides, "galp_tuicides")
-update_csv_data(galp_viso, "galp_el_viso")
-update_csv_data(galp_viso, "galp_hermann")
-update_csv_data(carrefour, "carrefour")
-update_csv_data(petroprix, "petroprix_licurgo")
-update_csv_data(bp, "bp_camino_suarez")
-update_csv_data(shell, "shell")
+def update_csv():
+    galp_tuicides, galp_viso, galp_hermann, carrefour, bp, petroprix, shell = get_data()
 
+    update_csv_data(galp_tuicides, "galp_tuicides")
+    update_csv_data(galp_viso, "galp_el_viso")
+    update_csv_data(galp_viso, "galp_hermann")
+    update_csv_data(carrefour, "carrefour")
+    update_csv_data(petroprix, "petroprix_licurgo")
+    update_csv_data(bp, "bp_camino_suarez")
+    update_csv_data(shell, "shell")
 
-print("Data of each petrol station updated.")
+    print("Data of each petrol station updated.")

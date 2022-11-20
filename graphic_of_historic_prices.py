@@ -2,34 +2,36 @@ import matplotlib.pyplot as plt
 import datetime
 
 # This script will be executed each day.
-
-galp_tuicides = []
-galp_viso = []
-galp_hermann = []
-carrefour = []
-bp = []
-petroprix = []
-shell = []
-
 print("Updating the graphic of the historic prices.")
 
-with open("Data/prices.csv", "r") as csvfile:
-    lines = csvfile.read().split("\n")
-    for line in lines:
-        if line and "Date" not in line:
-            line = line.split(",")
-            galp_tuicides.append(float(line[1]))
-            galp_viso.append(float(line[2]))
-            galp_hermann.append(float(line[3]))
-            carrefour.append(float(line[4]))
-            bp.append(float(line[5]))
-            petroprix.append(float(line[6]))
-            try:
-                shell.append(float(line[7]))
-            except:
-                pass
+
+def load_data():
+    galp_tuicides = []
+    galp_viso = []
+    galp_hermann = []
+    carrefour = []
+    bp = []
+    petroprix = []
+    shell = []
+    with open("Data/prices.csv", "r") as csvfile:
+        lines = csvfile.read().split("\n")
+        for line in lines:
+            if line and "Date" not in line:
+                line = line.split(",")
+                galp_tuicides.append(float(line[1]))
+                galp_viso.append(float(line[2]))
+                galp_hermann.append(float(line[3]))
+                carrefour.append(float(line[4]))
+                bp.append(float(line[5]))
+                petroprix.append(float(line[6]))
+                try:
+                    shell.append(float(line[7]))
+                except:
+                    pass
+    return galp_tuicides, galp_viso, galp_hermann, carrefour, bp, petroprix, shell
 
 def plot_line_chart():
+    galp_tuicides, galp_viso, galp_hermann, carrefour, bp, petroprix, shell = load_data()
     fig, ax = plt.subplots()
 
     ax.plot(galp_tuicides, "orange", marker='o', label="GALP - Tuicides")

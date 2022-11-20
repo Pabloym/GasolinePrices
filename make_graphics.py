@@ -22,13 +22,13 @@ def statistics_of_the_cheaper_day_of_a_week(name):
     plt.close()
     #plt.show()
 
-statistics_of_the_cheaper_day_of_a_week("galp_tuicides")
-statistics_of_the_cheaper_day_of_a_week("galp_el_viso")
-statistics_of_the_cheaper_day_of_a_week("galp_hermann")
-statistics_of_the_cheaper_day_of_a_week("carrefour")
-statistics_of_the_cheaper_day_of_a_week("petroprix_licurgo")
-statistics_of_the_cheaper_day_of_a_week("bp_camino_suarez")
-statistics_of_the_cheaper_day_of_a_week("shell")
+def make_graphic_for_cheaper_day():
+    statistics_of_the_cheaper_day_of_a_week("galp_tuicides")
+    statistics_of_the_cheaper_day_of_a_week("galp_el_viso")
+    statistics_of_the_cheaper_day_of_a_week("galp_hermann")
+    statistics_of_the_cheaper_day_of_a_week("carrefour")
+    statistics_of_the_cheaper_day_of_a_week("petroprix_licurgo")
+    statistics_of_the_cheaper_day_of_a_week("bp_camino_suarez")
+    statistics_of_the_cheaper_day_of_a_week("shell")
 
-
-print("Graphics of each petrol station updated.")
+    print("Graphics of each petrol station updated.")

@@ -2,8 +2,11 @@ from datetime import datetime
 import urllib
 import requests
 import csv
+import numpy as np
 
 # This script has to be executed each day.
+from emails import send_emails
+from graphic_comparing_some_petrol_station import plot_line_chart_of_comparisons
 from graphic_of_historic_prices import plot_line_chart
 from make_graphics import make_graphic_for_cheaper_day
 from update_csv import update_csv
@@ -105,6 +108,33 @@ def write_new_record(record):
     print(f"[INFO] Data updated to the current date {record['Date']}.")
 
 
+def get_indexs_with_minimun_price(prices):
+    minimo = min(prices)
+    return [index for index in [0,1,2,3,4,5,6] if prices[index] == minimo]
+
+
+def compute_statistics_for_last_week():
+    galp_tuicides = []
+    with open("Data/prices.csv", "r") as csvfile:
+        lines = csvfile.read().split("\n")
+        for line in lines:
+            if line and "Date" not in line:
+                line = line.split(",")
+                galp_tuicides.append(float(line[1]))
+
+    number_of_days = 7
+    prices = galp_tuicides[-number_of_days:]
+
+    precio_min = min(prices)
+    precio_max = max(prices)
+    precio_medio = round(sum(prices)/float(number_of_days), 3)
+
+    dict_of_weekday = {0: "Lunes", 1: "Martes", 2: "Miercoles", 3: "Jueves", 4: "Viernes", 5: "Sabado", 6: "Domingo"}
+
+    days = [dict_of_weekday[int(day)] for day in get_indexs_with_minimun_price(prices)]
+    return precio_medio, precio_min, precio_max, ", ".join(days)
+
+
 def main_donwload_data():
     results, date = download_data()
     final_results = polish_data(results, date)
@@ -116,5 +146,10 @@ def main_donwload_data():
         print("[INFO] Updating the cheaper weekday.")
         update_csv()
         make_graphic_for_cheaper_day()
+
+        plot_line_chart_of_comparisons()
+        precio_medio, precio_min, precio_max, dias = compute_statistics_for_last_week()
+        send_emails(precio_medio, precio_min, precio_max, dias)
+
 
 main_donwload_data()

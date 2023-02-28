@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import datetime
+from constants import MAIN_PATH
+
 
 # This script will be executed each Sunday.
 
@@ -9,7 +11,7 @@ def date_to_weekday(date):
 
 
 def statistics_of_the_cheaper_day_of_a_week(name):
-    with open(f"Data/cheaper_day_for_{name}.csv", "r") as csvfile:
+    with open("{}/Data/cheaper_day_for_{}.csv".format(MAIN_PATH, name), "r") as csvfile:
         lines = csvfile.read().split("\n")
         days = lines[0].split(",")
         statistics = [int(value) for value in lines[1].split(",")]
@@ -17,8 +19,8 @@ def statistics_of_the_cheaper_day_of_a_week(name):
     y_pos = [1, 2, 3, 4, 5, 6, 7]
     plt.bar(y_pos, statistics)
     plt.xticks(y_pos, days, rotation=15)
-    plt.title('Cheaper weekday to fill the fuel tank.')
-    plt.savefig(f"Results/cheaper_day_{name}")
+    plt.title('Días más baratos de la semana')
+    plt.savefig("{}/Results/cheaper_day_{}".format(MAIN_PATH, name))
     plt.close()
     #plt.show()
 
@@ -31,4 +33,4 @@ def make_graphic_for_cheaper_day():
     statistics_of_the_cheaper_day_of_a_week("bp_camino_suarez")
     statistics_of_the_cheaper_day_of_a_week("shell")
 
-    print("Graphics of each petrol station updated.")
+    print("Gráficos con las estadísticas de cada estación actualizadas.")

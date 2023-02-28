@@ -1,6 +1,7 @@
 import datetime
 import numpy as np
 import pandas as pd
+from constants import MAIN_PATH
 
 # This script have to be executed weekly on Sunday.
 
@@ -24,7 +25,7 @@ def get_data():
     petroprix = []
     shell = []
 
-    with open("Data/prices.csv", "r") as csvfile:
+    with open("{}/Data/prices.csv".format(MAIN_PATH), "r") as csvfile:
         lines = csvfile.read().split("\n")
         for line in lines:
             if line and "Date" not in line:
@@ -59,15 +60,15 @@ def cheaper_day(petrol_station):
 
 
 def update_csv_data(petrol_station, petrol_station_name):
-    path = f"Data/cheaper_day_for_{petrol_station_name}.csv"
+    path = "{}/Data/cheaper_day_for_{}.csv".format(MAIN_PATH, petrol_station_name)
     df = pd.read_csv(path)
-    dict_of_weekday = {0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}
+    dict_of_weekday = {0: "Lunes", 1: "Martes", 2: "Miercoles", 3: "Jueves", 4: "Viernes", 5: "Sabado", 6: "Domingo"}
     weekdays = [dict_of_weekday[day] for day in cheaper_day(petrol_station)]
     for weekday in weekdays:
         value_to_update = df._get_value(0, weekday)
         df[weekday] = df[weekday].replace({value_to_update: value_to_update + 1})
     df.to_csv(path, index=False)
-    print(f"Update completed for petrol station: {petrol_station_name}")
+    print(f"[DEBUG] Estadásticas de {petrol_station_name} actualizada.")
 
 
 def update_csv():
@@ -81,4 +82,4 @@ def update_csv():
     update_csv_data(bp, "bp_camino_suarez")
     update_csv_data(shell, "shell")
 
-    print("Data of each petrol station updated.")
+    print("[INFO] Datos de cada estación actualizados.")

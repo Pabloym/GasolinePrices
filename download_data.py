@@ -20,11 +20,21 @@ def download_data():
     urllib.request.urlretrieve(URL, "{}/Data/gasoline.txt".format(MAIN_PATH))
 
     print("[INFO] Descargando datos de {}".format(URL))
-
-    file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8")
+    
+    file = open("/home/pyanez/Desktop/GasolinePrices-master/Data/gasoline.txt", encoding="utf-8").read()
     #encoding="mcbs" if running on windows
+    
+    # Este caso sirve para repetir la query en caso de que los datos vengan vacios
+    retries = 10
+    while '"ListaEESSPrecio":[]' in file and retries > 0:
+        print(f"[WARN] Los datos están vacios! Esperando un minuto para repetir la query. Intentos: {11-retries}.")
+        time.sleep(60)
+        
+        urllib.request.urlretrieve(URL, "/home/pyanez/Desktop/GasolinePrices-master/Data/gasoline.txt")
+        file = open("/home/pyanez/Desktop/GasolinePrices-master/Data/gasoline.txt", encoding="utf-8").read()
+        retries -= 1
 
-    list_of_prices = file.read().split("{")
+    list_of_prices = file.split("{")
 
     date = list_of_prices[1].split("\"")[3].replace("\\", "").split(" ")[0]
 

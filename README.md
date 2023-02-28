@@ -9,3 +9,5 @@ En este repositorio se hará un estudio de cuál es el día más barato de la se
 - CARREFOUR - Calle Sain Exupery
 - PETROPRIX - Calle Licurgo
 - Shell - Calle Esteban Salazar Chapela
+
+*Los datos se van a ir actualizando cada semana automaticamente mediante la Raspberry Pi.

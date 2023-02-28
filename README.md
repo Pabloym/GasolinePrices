@@ -1,6 +1,6 @@
 # Precios de la gasolina en Málaga
 
-En este repositorio se hará un estudio de cuál es el día más barato de la semana para respotar Gasolina Sin Plomo 95 en las siguientes gasolineras:
+En este repositorio se hará un estudio de cuál es el día más barato de la semana para repostar Gasolina Sin Plomo 95 en las siguientes gasolineras:
 
 - GALP - Calle Tuicides
 - GALP - Poligono El Viso
@@ -8,3 +8,4 @@ En este repositorio se hará un estudio de cuál es el día más barato de la se
 - BP - Camino Suarez
 - CARREFOUR - Calle Sain Exupery
 - PETROPRIX - Calle Licurgo
+- Shell - Calle Esteban Salazar Chapela

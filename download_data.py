@@ -21,7 +21,7 @@ def download_data():
 
     print("[INFO] Descargando datos de {}".format(URL))
     
-    file = open("/home/pyanez/Desktop/GasolinePrices-master/Data/gasoline.txt", encoding="utf-8").read()
+    file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8").read()
     #encoding="mcbs" if running on windows
     
     # Este caso sirve para repetir la query en caso de que los datos vengan vacios
@@ -30,8 +30,8 @@ def download_data():
         print(f"[WARN] Los datos están vacios! Esperando un minuto para repetir la query. Intentos: {11-retries}.")
         time.sleep(60)
         
-        urllib.request.urlretrieve(URL, "/home/pyanez/Desktop/GasolinePrices-master/Data/gasoline.txt")
-        file = open("/home/pyanez/Desktop/GasolinePrices-master/Data/gasoline.txt", encoding="utf-8").read()
+        urllib.request.urlretrieve(URL, "{}/Data/gasoline.txt".format(MAIN_PATH))
+        file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8").read()
         retries -= 1
 
     list_of_prices = file.split("{")

@@ -2,12 +2,11 @@ import matplotlib.pyplot as plt
 from constants import MAIN_PATH
 
 def compute_galp_price(original_price):
-    print("[INFO] Actualizando gŕafica comparando los precios de las estaciones de Galp Tucidides, Galp Hermann Hesse, Carrefour y Petropix.")
-
     # Estamos suponiendo que estamos echando gasolina del 1 al 5 de cada mes, donde Mapfre nos devuelve un 5%, sino sería un 3%.
     return original_price*0.95 - 0.1
 
 def load_data():
+    print("[INFO] Actualizando gŕafica comparando los precios de las estaciones de Galp Tucidides, Galp Hermann Hesse, Carrefour y Petropix.")
     galp_tuicides = []
     galp_hermann = []
     carrefour = []

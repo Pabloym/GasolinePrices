@@ -3,9 +3,12 @@ import matplotlib.pyplot as plt
 # This script will be executed each day.
 print("[INFO] Updating the graphic of the comparison between Galp Tucidides, Galp Hernan Hesse, Carrefour and Petropix prices.")
 
-def compute_galp_price(original_price):
-    # Estamos suponiendo que estamos echando gasolina del 1 al 5 de cada mes donde Mapfre nos devuelve un 5%.
-    return original_price*0.95 - 0.1
+def compute_galp_price(date, original_price):
+    # Estamos suponiendo que estamos echando gasolina del 1 al 5 de cada mes donde Mapfre nos devuelve un 5%, y sino sería un 3%.
+    # A eso, habría que añadirle los 5 cent de descuento que ofrece GALP.
+    day = int(date[0:2])
+    discount = 0.95 if day <= 5 else 0.97
+    return original_price*discount - 0.05
 
 def load_data():
     galp_tuicides = []
@@ -17,8 +20,8 @@ def load_data():
         for line in lines:
             if line and "Date" not in line:
                 line = line.split(",")
-                galp_tuicides.append(compute_galp_price(float(line[1])))
-                galp_hermann.append(compute_galp_price(float(line[3])))
+                galp_tuicides.append(compute_galp_price(line[0], float(line[1])))
+                galp_hermann.append(compute_galp_price(line[0], float(line[3])))
                 # Con la tarjeta carrefour devuelve un 8% para compras en el carrefour
                 carrefour.append(float(line[4])*0.92)
                 petroprix.append(float(line[6]))

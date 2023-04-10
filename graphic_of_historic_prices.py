@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
 import datetime
+from constants import MAIN_PATH
 
 # This script will be executed each day.
-print("Updating the graphic of the historic prices.")
-
 
 def load_data():
     galp_tuicides = []
@@ -13,7 +12,7 @@ def load_data():
     bp = []
     petroprix = []
     shell = []
-    with open("Data/prices.csv", "r") as csvfile:
+    with open("{}/Data/prices.csv".format(MAIN_PATH), "r") as csvfile:
         lines = csvfile.read().split("\n")
         for line in lines:
             if line and "Date" not in line:
@@ -31,6 +30,8 @@ def load_data():
     return galp_tuicides, galp_viso, galp_hermann, carrefour, bp, petroprix, shell
 
 def plot_line_chart():
+    print("[INFO] Actualizando la gráfica de precios históricos...")
+
     galp_tuicides, galp_viso, galp_hermann, carrefour, bp, petroprix, shell = load_data()
     fig, ax = plt.subplots()
 
@@ -42,14 +43,12 @@ def plot_line_chart():
     ax.plot(petroprix, "r",  marker='o', label="Petroprix")
     ax.plot(list(range(57, len(galp_viso))), shell, "fuchsia",  marker='o', label="Shell")
 
-    plt.title('Historic prices')
-    plt.xlabel('Days')
-    plt.ylabel('Prices')
+    plt.title('Histórico de precios')
+    plt.xlabel('Días')
+    plt.ylabel('Precios')
     plt.legend()
-    plt.savefig("Results/historic_prices.jpg")
+    plt.savefig("{}/Results/historic_prices.jpg".format(MAIN_PATH))
     plt.close()
     #plt.show()
+    print("[INFO] Gráfica de precios históricos actualizada.")
 
-plot_line_chart()
-
-print("Graphic updated.")

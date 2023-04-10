@@ -3,25 +3,27 @@ import ssl
 from email.utils import make_msgid
 import mimetypes
 from email.message import EmailMessage
+from constants import MAIN_PATH
 
-def send_emails(precio_medio, precio_min, precio_max, dias):
+def send_emails(precio_medio, precio_min, precio_max, precio_historico_medio, dias):
 
     email_sender = ''
     email_password = ''
-    email_receiver = ['', '']
+    email_receiver = ['']
 
     subject = "GALP Tucídides"
 
     body = """
     <html>
         <body>
-            <p>Informe semanal de la gasolina en la estación Galp de calle Tuicidides.</p>
+            <p>Informe semanal de la gasolina en la estación Galp de calle Tucídides.</p>
             <p>Precio medio: {precio_medio}</p>
             <p>Precio mínimo: {precio_min}</p>
             <p>Precio máximo: {precio_max}</p>
+            <p>Precio histórico medio: {precio_historico_medio}</p>
             <p>Día(s) más barato de la semana: {dias}</p>
             <p></p>
-            <p>Comparación entre GALP Tucidides, GALP Hernann Hesse y Petroprix</p>
+            <p>Comparación entre GALP Tucídides, GALP Hermann Hesse, Petroprix y Carrefour</p>
             <img src="cid:{image_comparison}">
             <p>*El precio de las estaciones de Galp se ha calculado restandole el 5% de cashback para el seguro de Mapfre y restándole los 10 cents de la promoción de Galp.</p>
             <p>*El precio de la estación de Carrefour se ha calculado restandole el 8% de cashback que te devuelven en la tarjeta Carrefour.</p>
@@ -32,6 +34,7 @@ def send_emails(precio_medio, precio_min, precio_max, dias):
     body = body.replace('{precio_medio}', str(precio_medio))\
         .replace('{precio_min}', str(precio_min))\
         .replace('{precio_max}', str(precio_max))\
+        .replace('{precio_historico_medio}', str(precio_historico_medio))\
         .replace('{dias}', dias)
 
     em = EmailMessage()
@@ -53,7 +56,7 @@ def send_emails(precio_medio, precio_min, precio_max, dias):
 
 
     # now open the image and attach it to the email
-    with open('Results/comparison.jpg', 'rb') as img:
+    with open('{}/Results/comparison.jpg'.format(MAIN_PATH), 'rb') as img:
 
         # know the Content-Type of the image
         maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
@@ -67,7 +70,7 @@ def send_emails(precio_medio, precio_min, precio_max, dias):
 
     context = ssl.create_default_context()
 
-    print("[INFO] Sending emails...")
+    print("[INFO] Enviando email a {}".format(", ".join(email_receiver)))
 
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
         smtp.login(email_sender, email_password)

@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
+from constants import MAIN_PATH
 
-# This script will be executed each day.
-print("[INFO] Updating the graphic of the comparison between Galp Tucidides, Galp Hernan Hesse, Carrefour and Petropix prices.")
 
 def compute_galp_price(date, original_price):
     # Estamos suponiendo que estamos echando gasolina del 1 al 5 de cada mes donde Mapfre nos devuelve un 5%, y sino sería un 3%.
@@ -10,12 +9,14 @@ def compute_galp_price(date, original_price):
     discount = 0.95 if day <= 5 else 0.97
     return original_price*discount - 0.05
 
+
 def load_data():
+    print("[INFO] Actualizando gŕafica comparando los precios de las estaciones de Galp Tucidides, Galp Hermann Hesse, Carrefour y Petropix.")
     galp_tuicides = []
     galp_hermann = []
     carrefour = []
     petroprix = []
-    with open("Data/prices.csv", "r") as csvfile:
+    with open("{}/Data/prices.csv".format(MAIN_PATH), "r") as csvfile:
         lines = csvfile.read().split("\n")
         for line in lines:
             if line and "Date" not in line:
@@ -37,14 +38,12 @@ def plot_line_chart_of_comparisons():
     ax.plot(galp_tuicides, "orange", marker='o', label="GALP - Tuicides")
 
 
-    plt.title('Prices during the last 30 days')
-    plt.xlabel('Days')
-    plt.ylabel('Prices')
+    plt.title('Precios de los últimos 30 días')
+    plt.xlabel('Días')
+    plt.ylabel('Precios')
     plt.legend()
-    plt.savefig("Results/comparison.jpg")
+    plt.savefig("{}/Results/comparison.jpg".format(MAIN_PATH))
     plt.close()
     #plt.show()
 
-plot_line_chart_of_comparisons()
-
-print("[INFO] Graphic of the comparison updated.")
+    print("[INFO] Gráfica comparando los precios de los últimos 30 días actualizada.")

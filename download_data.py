@@ -4,12 +4,12 @@ import requests
 import csv
 import numpy as np
 
-# This script has to be executed each day.
 from emails import send_emails
 from graphic_comparing_some_petrol_station import plot_line_chart_of_comparisons
 from graphic_of_historic_prices import plot_line_chart
 from make_graphics import make_graphic_for_cheaper_day
 from update_csv import update_csv
+from constants import MAIN_PATH
 
 
 def download_data():
@@ -17,14 +17,24 @@ def download_data():
     ID_PRODUCTO = 1
     URL = f"https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipioProducto/{ID_MUNICIPIO}/{ID_PRODUCTO}"
 
-    urllib.request.urlretrieve(URL, "Data/gasoline.txt")
+    urllib.request.urlretrieve(URL, "{}/Data/gasoline.txt".format(MAIN_PATH))
 
-    print(("Donwloading data..."))
-
-    file = open("Data/gasoline.txt", encoding="utf-8")
+    print("[INFO] Descargando datos de {}".format(URL))
+    
+    file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8").read()
     #encoding="mcbs" if running on windows
+    
+    # Este caso sirve para repetir la query en caso de que los datos vengan vacios
+    retries = 10
+    while '"ListaEESSPrecio":[]' in file and retries > 0:
+        print(f"[WARN] Los datos están vacios! Esperando un minuto para repetir la query. Intentos: {11-retries}.")
+        time.sleep(60)
+        
+        urllib.request.urlretrieve(URL, "{}/Data/gasoline.txt".format(MAIN_PATH))
+        file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8").read()
+        retries -= 1
 
-    list_of_prices = file.read().split("{")
+    list_of_prices = file.split("{")
 
     date = list_of_prices[1].split("\"")[3].replace("\\", "").split(" ")[0]
 
@@ -61,7 +71,7 @@ def download_data():
 
 
 def recover_data(petrol_station):
-    with open("Data/prices.csv", "r") as csvfile:
+    with open("{}/Data/prices.csv".format(MAIN_PATH), "r") as csvfile:
         lines = csvfile.read().split("\n")
         header = lines[0].split(",")
         last_record = lines[-1]
@@ -80,7 +90,7 @@ def recover_data(petrol_station):
 
 
 def polish_data(results, date):
-    filtering_petrol_station = [("CALLE ESTEBAN SALAZAR CHAPELA", "SHELL", "SHELL"), ("CALLE TUICIDES", "GALP", "GALP-TUICIDES"), ("AVENIDA AVDA. WASHINGTON-POLIG. EL VISO", "GALP", "GALP-EL VISO"), ("CALLE HERMAN HESSE", "GALP", "GALP-HERMANN"), ("CALLE SAIN EXUPERY", "CARREFOUR", "CARREFOUR"), ("AV VALLE INCLAN", "BP CAMINO SUAREZ", "BP CAMINO SUAREZ"), ("CALLE LICURGO", "PETROPRIX", "PETROPRIX-LICURGO")]
+    filtering_petrol_station = [("CALLE ESTEBAN SALAZAR CHAPELA", "SHELL", "SHELL"), ("CALLE TUICIDES", "GALP", "GALP-TUCIDIDES"), ("AVENIDA AVDA. WASHINGTON-POLIG. EL VISO", "GALP", "GALP-EL VISO"), ("CALLE HERMAN HESSE", "GALP", "GALP-HERMANN"), ("CALLE SAIN EXUPERY", "CARREFOUR", "CARREFOUR"), ("AV VALLE INCLAN", "BP CAMINO SUAREZ", "BP CAMINO SUAREZ"), ("CALLE LICURGO", "PETROPRIX", "PETROPRIX-LICURGO")]
 
     final_results = dict()
     final_results["Date"] = date
@@ -97,15 +107,15 @@ def polish_data(results, date):
     return final_results
 
 def write_new_record(record):
-    headers = ["Date", "GALP-TUICIDES", "GALP-EL VISO", "GALP-HERMANN", "CARREFOUR", "BP CAMINO SUAREZ", "PETROPRIX-LICURGO", "SHELL"]
+    headers = ["Date", "GALP-TUCIDIDES", "GALP-EL VISO", "GALP-HERMANN", "CARREFOUR", "BP CAMINO SUAREZ", "PETROPRIX-LICURGO", "SHELL"]
 
-    with open("Data/prices.csv", "a", newline='') as csvfile:
+    with open("{}/Data/prices.csv".format(MAIN_PATH), "a", newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=headers)
         #writer.writeheader()
         writer.writerow(record)
         csvfile.close()
 
-    print(f"[INFO] Data updated to the current date {record['Date']}.")
+    print(f"[INFO] Datos actualizados a {record['Date']}.")
 
 
 def get_indexs_with_minimun_price(prices):
@@ -115,7 +125,7 @@ def get_indexs_with_minimun_price(prices):
 
 def compute_statistics_for_last_week():
     galp_tuicides = []
-    with open("Data/prices.csv", "r") as csvfile:
+    with open("{}/Data/prices.csv".format(MAIN_PATH), "r") as csvfile:
         lines = csvfile.read().split("\n")
         for line in lines:
             if line and "Date" not in line:
@@ -128,11 +138,12 @@ def compute_statistics_for_last_week():
     precio_min = min(prices)
     precio_max = max(prices)
     precio_medio = round(sum(prices)/float(number_of_days), 3)
-
+    precio_historico_medio = round(sum(galp_tuicides)/float(len(galp_tuicides)),3)
+    
     dict_of_weekday = {0: "Lunes", 1: "Martes", 2: "Miercoles", 3: "Jueves", 4: "Viernes", 5: "Sabado", 6: "Domingo"}
 
     days = [dict_of_weekday[int(day)] for day in get_indexs_with_minimun_price(prices)]
-    return precio_medio, precio_min, precio_max, ", ".join(days)
+    return precio_medio, precio_min, precio_max, precio_historico_medio, ", ".join(days)
 
 
 def main_donwload_data():
@@ -143,13 +154,13 @@ def main_donwload_data():
     plot_line_chart()
 
     if datetime.today().weekday() == 6:
-        print("[INFO] Updating the cheaper weekday.")
+        print("[INFO] Actualizando la gráfica del día más barato en la semana.")
         update_csv()
         make_graphic_for_cheaper_day()
 
         plot_line_chart_of_comparisons()
-        precio_medio, precio_min, precio_max, dias = compute_statistics_for_last_week()
-        send_emails(precio_medio, precio_min, precio_max, dias)
+        precio_medio, precio_min, precio_max, precio_historico_medio, dias = compute_statistics_for_last_week()
+        send_emails(precio_medio, precio_min, precio_max, precio_historico_medio, dias)
 
 
 main_donwload_data()

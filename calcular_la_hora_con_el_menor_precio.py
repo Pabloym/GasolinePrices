@@ -5,6 +5,8 @@ import csv
 from tempfile import NamedTemporaryFile
 import shutil
 import requests
+from update_graphics_of_cheaper_hours import plot_line_chart_of_cheaper_hours
+
 
 def download_data():
     ID_MUNICIPIO = 4521
@@ -101,6 +103,8 @@ def compute_cheaper_hour(rotulo, direccion, nombre):
         "23.30": ""}
     headers = list(row_template.keys())
     if hora == "00" and int(datetime.today().minute) < 30:
+        plot_line_chart_of_cheaper_hours("tucidides")
+        plot_line_chart_of_cheaper_hours("herman_hesse")
         with open(filename, "w") as csvfile:
             row = row_template
             row[nombre] = dia

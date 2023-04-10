@@ -27,6 +27,13 @@ def send_emails(precio_medio, precio_min, precio_max, precio_historico_medio, di
             <img src="cid:{image_comparison}">
             <p>*El precio de las estaciones de Galp se ha calculado restandole el 5% de cashback para el seguro de Mapfre del 1 al 5 de cada mes, y el 3% el resto del mes. Asi como, restándole los 5 cents de descuento de la promoción de Galp.</p>
             <p>*El precio de la estación de Carrefour se ha calculado restandole el 8% de cashback que te devuelven en la tarjeta Carrefour.</p>
+            <p></p>
+            <p>Gráfica con los precios por horas de GALP Tucidides:</p>
+            <img src="cid:{image_tucidides}">
+            <p></p>
+            <p>Gráfica con los precios por horas de GALP Herman Hesse:</p>
+            <img src="cid:{image_herman_hesse}">
+            <p></p>
         </body>
     </html>
     """
@@ -66,6 +73,35 @@ def send_emails(precio_medio, precio_min, precio_max, precio_historico_medio, di
                                          maintype=maintype,
                                          subtype=subtype,
                                          cid=image_comparison)
+                                         
+    image_of_cheaper_hour_of_tucidides = make_msgid('xyz.com')
+    image_of_cheaper_hour_of_herman_hesse = make_msgid('xyz.com')
+    
+    em.add_alternative(body.format(image_tucidides=image_of_cheaper_hour_of_tucidides[1:-1]), subtype='html')
+    em.add_alternative(body.format(image_herman_hesse=image_of_cheaper_hour_of_herman_hesse[1:-1]), subtype='html')
+    
+    with open('{}/Results/cheaper_hour_tucidides.jpg'.format(MAIN_PATH), 'rb') as img:
+
+        # know the Content-Type of the image
+        maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
+
+        # attach it
+        em.get_payload()[1].add_related(img.read(),
+                                         maintype=maintype,
+                                         subtype=subtype,
+                                         cid=image_of_cheaper_hour_tucidides)
+                                         
+    with open('{}/Results/chepaer_hour_herman_hesse.jpg'.format(MAIN_PATH), 'rb') as img:
+
+        # know the Content-Type of the image
+        maintype, subtype = mimetypes.guess_type(img.name)[0].split('/')
+
+        # attach it
+        em.get_payload()[1].add_related(img.read(),
+                                         maintype=maintype,
+                                         subtype=subtype,
+                                         cid=image_of_cheaper_hour_of_herman_hesse)                                         
+                                             
 
 
     context = ssl.create_default_context()

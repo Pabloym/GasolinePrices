@@ -64,22 +64,35 @@ def download_data():
     return results, date
 
 
-def update_row_in_csv(hora, price, dia, headers, filename, nombre):
+def update_row_in_csv(hora, price, dia, filename, nombre):
     tempfile = NamedTemporaryFile(mode='w', delete=False, newline="")
-
+    
+    row_template = {
+        nombre: "", "00.00": "", "00.30": "", "01.00": "", "01.30": "", "02.00": "", "02.30": "", "03.00": "",
+        "04.30": "", "05.00": "", "06.30": "", "07.00": "", "07.30": "", "08.00": "", "08.30": "", "09.00": "",
+        "09.30": "", "10.00": "", "10.30": "", "11.00": "", "12.30": "", "13.00": "", "13.30": "", "14.00": "",
+        "14.30": "", "15.00": "", "15.30": "", "16.00": "", "16.30": "", "17.00": "", "17.30": "", "18.00": "",
+        "18.30": "", "19.00": "", "19.30": "", "20.00": "", "21.30": "", "22.00": "", "22.30": "", "23.00": "",
+        "23.30": ""}    
+    headers = list(row_template.keys())
     with open(filename, 'r') as csvfile, tempfile:
         reader = csv.DictReader(csvfile, fieldnames=headers)
         writer = csv.DictWriter(tempfile, fieldnames=headers)
         writer.writeheader()
 
         for row in reader:
-            if (row[nombre] != nombre):
-                if row[nombre] == dia:
-                    row[hora] = price
-                    writer.writerow(row)
-                else:
-                    writer.writerow(row)
-
+            if row[nombre] == dia:
+                row[hora] = price
+                writer.writerow(row)
+            else:
+                writer.writerow(row)
+                
+        if hora == "00" and int(datetime.today().minute) < 30:
+            row = row_template
+            row[nombre] = dia
+            row[hora] = price
+            writer.writerow(row)
+            
     shutil.move(tempfile.name, filename)
 
 
@@ -94,24 +107,11 @@ def compute_cheaper_hour(rotulo, direccion, nombre):
 
     filename = "{}/Data/cheaper_hour_{}.csv".format(MAIN_PATH, nombre)
 
-    row_template = {
-        nombre: "", "00.00": "", "00.30": "", "01.00": "", "01.30": "", "02.00": "", "02.30": "", "03.00": "",
-        "04.30": "", "05.00": "", "06.30": "", "07.00": "", "07.30": "", "08.00": "", "08.30": "", "09.00": "",
-        "09.30": "", "10.00": "", "10.30": "", "11.00": "", "12.30": "", "13.00": "", "13.30": "", "14.00": "",
-        "14.30": "", "15.00": "", "15.30": "", "16.00": "", "16.30": "", "17.00": "", "17.30": "", "18.00": "",
-        "18.30": "", "19.00": "", "19.30": "", "20.00": "", "21.30": "", "22.00": "", "22.30": "", "23.00": "",
-        "23.30": ""}
-    headers = list(row_template.keys())
     if hora == "00" and int(datetime.today().minute) < 30:
         plot_line_chart_of_cheaper_hours("tucidides")
         plot_line_chart_of_cheaper_hours("herman_hesse")
-        with open(filename, "w") as csvfile:
-            row = row_template
-            row[nombre] = dia
-            row[fecha] = precio
-            csvfile.writerow(row)
-    else:
-        update_row_in_csv(fecha, precio, dia, headers, filename, nombre)
+
+    update_row_in_csv(fecha, precio, dia, filename, nombre)
 
 compute_cheaper_hour(rotulo='GALP', direccion='CALLE TUICIDES', nombre='tucidides')
 compute_cheaper_hour(rotulo='GALP', direccion='CALLE HERMAN HESSE', nombre='herman_hesse')

@@ -9,7 +9,7 @@ def send_emails(precio_medio, precio_min, precio_max, precio_historico_medio, di
 
     email_sender = ''
     email_password = ''
-    email_receiver = ['']
+    email_receiver = ['', '']
 
     subject = "GALP Tucídides"
 
@@ -25,7 +25,7 @@ def send_emails(precio_medio, precio_min, precio_max, precio_historico_medio, di
             <p></p>
             <p>Comparación entre GALP Tucídides, GALP Hermann Hesse, Petroprix y Carrefour</p>
             <img src="cid:{image_comparison}">
-            <p>*El precio de las estaciones de Galp se ha calculado restandole el 5% de cashback para el seguro de Mapfre y restándole los 10 cents de la promoción de Galp.</p>
+            <p>*El precio de las estaciones de Galp se ha calculado restandole el 5% de cashback para el seguro de Mapfre del 1 al 5 de cada mes, y el 3% el resto del mes. Asi como, restándole los 5 cents de descuento de la promoción de Galp.</p>
             <p>*El precio de la estación de Carrefour se ha calculado restandole el 8% de cashback que te devuelven en la tarjeta Carrefour.</p>
         </body>
     </html>

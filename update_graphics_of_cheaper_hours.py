@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
+from constants import MAIN_PATH
+
 
 def load_data(name):
     galp = []
-    with open("Data/cheaper_hour_{}.csv".format(name), "r") as csvfile:
+    with open("{}/Data/cheaper_hour_{}.csv".format(MAIN_PATH, name), "r") as csvfile:
         lines = csvfile.read().split("\n")
         for line in lines:
             if line and name not in line:
@@ -25,7 +27,7 @@ def plot_line_chart_of_cheaper_hours(name: str):
     plt.xticks(rotation=90)
     plt.ylabel('Prices')
     plt.legend()
-    plt.savefig("Results/cheaper_hour_{}.jpg".format(name))
+    plt.savefig("{}/Results/cheaper_hour_{}.jpg".format(MAIN_PATH, name))
     plt.close()
     #plt.show()
 

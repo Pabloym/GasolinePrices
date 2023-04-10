@@ -6,18 +6,18 @@ from tempfile import NamedTemporaryFile
 import shutil
 import requests
 from update_graphics_of_cheaper_hours import plot_line_chart_of_cheaper_hours
-
+from constants import MAIN_PATH
 
 def download_data():
     ID_MUNICIPIO = 4521
     ID_PRODUCTO = 1
     URL = f"https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipioProducto/{ID_MUNICIPIO}/{ID_PRODUCTO}"
 
-    urllib.request.urlretrieve(URL, "Data/gasoline.txt")
+    urllib.request.urlretrieve(URL, "{}/Data/gasoline.txt".format(MAIN_PATH))
 
     print(("Donwloading data..."))
 
-    file = open("Data/gasoline.txt", encoding="utf-8").read()
+    file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8").read()
     #encoding="mcbs" if running on windows
 
     reintentos = 10
@@ -25,7 +25,7 @@ def download_data():
         print("[WARN] Los datos están vacios, descargando de nuevo...")
         time.sleep(60)
         urllib.request.urlretrieve(URL, "Data/gasoline.txt")
-        file = open("Data/gasoline.txt", encoding="utf-8").read()
+        file = open("{}/Data/gasoline.txt".format(MAIN_PATH), encoding="utf-8").read()
         reintentos -= 1
 
     list_of_prices = file.split("{")
@@ -92,7 +92,7 @@ def compute_cheaper_hour(rotulo, direccion, nombre):
     minuto = "00" if int(datetime.today().minute) < 30 else "30"
     fecha = "{}.{}".format(hora, minuto)
 
-    filename = "Data/cheaper_hour_{}.csv".format(nombre)
+    filename = "{}/Data/cheaper_hour_{}.csv".format(MAIN_PATH, nombre)
 
     row_template = {
         nombre: "", "00.00": "", "00.30": "", "01.00": "", "01.30": "", "02.00": "", "02.30": "", "03.00": "",

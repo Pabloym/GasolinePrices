@@ -78,7 +78,7 @@ def update_row_in_csv(hora, price, dia, filename, nombre):
     with open(filename, 'r') as csvfile, tempfile:
         reader = csv.DictReader(csvfile, fieldnames=headers)
         writer = csv.DictWriter(tempfile, fieldnames=headers)
-        writer.writeheader()
+        #writer.writeheader()
 
         for row in reader:
             if row[nombre] == dia:
@@ -87,7 +87,7 @@ def update_row_in_csv(hora, price, dia, filename, nombre):
             else:
                 writer.writerow(row)
                 
-        if hora == "00" and int(datetime.today().minute) < 30:
+        if hora == "00.00" and int(datetime.today().minute) < 30:
             row = row_template
             row[nombre] = dia
             row[hora] = price

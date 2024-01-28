@@ -81,17 +81,18 @@ def update_row_in_csv(hora, price, dia, filename, nombre):
         #writer.writeheader()
 
         for row in reader:
+            print(nombre)
+            print(row)
             if row[nombre] == dia:
                 row[hora] = price
                 writer.writerow(row)
             else:
                 writer.writerow(row)
                 
-        if hora == "00.00" and int(datetime.today().minute) < 30:
-            row = row_template
-            row[nombre] = dia
-            row[hora] = price
-            writer.writerow(row)
+        row = row_template
+        row[nombre] = dia
+        row[hora] = price
+        writer.writerow(row)
             
     shutil.move(tempfile.name, filename)
 
@@ -108,8 +109,7 @@ def compute_cheaper_hour(rotulo, direccion, nombre):
     filename = "{}/Data/cheaper_hour_{}.csv".format(MAIN_PATH, nombre)
 
     if hora == "00" and int(datetime.today().minute) < 30:
-        plot_line_chart_of_cheaper_hours("tucidides")
-        plot_line_chart_of_cheaper_hours("herman_hesse")
+        plot_line_chart_of_cheaper_hours(nombre)
 
     update_row_in_csv(fecha, precio, dia, filename, nombre)
 
